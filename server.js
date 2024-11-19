@@ -12,7 +12,7 @@ const cors = require('cors');
 
 // Configura CORS para permitir el acceso desde tu frontend en Netlify
 app.use(cors({
-    origin: '*', // Reemplaza con la URL de tu frontend
+    origin: 'sprightly-druid-1fb38a.netlify.app', // Reemplaza con la URL de tu frontend
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true, // Permite el envío de cookies

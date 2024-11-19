@@ -12,7 +12,7 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
         body: JSON.stringify({ username, password }),
         credentials: 'include', // Asegúrate de incluir las cookies si usas autenticación basada en cookies
     });
-
+    
     const message = document.getElementById("message");
     if (response.ok) {
         message.textContent = "Inicio de sesión exitoso.";

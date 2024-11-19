@@ -120,3 +120,37 @@ app.post('/login', (req, res) => {
         res.status(200).send('Inicio de sesión exitoso.');
     });
 });
+
+
+app.post('/login', (req, res) => {
+    const { username, password } = req.body;
+
+    if (!username || !password) {
+        return res.status(400).send('Faltan campos obligatorios.');
+    }
+
+    const query = 'SELECT * FROM users WHERE username = ?';
+    db.query(query, [username], async (err, results) => {
+        if (err) {
+            console.error('Error al consultar la base de datos:', err);
+            return res.status(500).send('Error interno al consultar la base de datos.');
+        }
+
+        if (results.length === 0) {
+            return res.status(404).send('Usuario no encontrado.');
+        }
+
+        try {
+            const isPasswordValid = await bcrypt.compare(password, results[0].password);
+            if (!isPasswordValid) {
+                return res.status(400).send('Contraseña incorrecta.');
+            }
+
+            res.cookie('username', results[0].username, { maxAge: 900000 });
+            res.status(200).send('Inicio de sesión exitoso.');
+        } catch (error) {
+            console.error('Error al comparar contraseñas:', error);
+            res.status(500).send('Error interno al verificar la contraseña.');
+        }
+    });
+});

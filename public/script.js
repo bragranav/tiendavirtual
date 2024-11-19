@@ -23,6 +23,10 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
         message.textContent = "Usuario o contraseña incorrectos.";
         message.style.color = "red";
     }
+
+    const errorText = await response.text();
+message.textContent = errorText || "Error inesperado. Intenta de nuevo.";
+message.style.color = "red";
 });
 
 document.getElementById("registerForm")?.addEventListener("submit", async (e) => {
@@ -49,5 +53,11 @@ document.getElementById("registerForm")?.addEventListener("submit", async (e) =>
         message.textContent = errorText;
         message.style.color = "red";
     }
+
+    const errorText = await response.text();
+message.textContent = errorText || "Error inesperado. Intenta de nuevo.";
+message.style.color = "red";
 });
+
+
 

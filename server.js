@@ -11,12 +11,13 @@ const PORT = process.env.PORT || 3306;
 const cors = require('cors');
 
 // Configura CORS para permitir el acceso desde tu frontend en Netlify
-/*app.use(cors({
-    origin: 'https://673c1d1eccf5d1b0266bb1a9--sprightly-druid-1fb38a.netlify.app', // Reemplaza con la URL de tu frontend
+app.use(cors({
+    origin: 'https://sprightly-druid-1fb38a.netlify.app',
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
-    credentials: true, // Permite el envío de cookies
-}));*/
+    credentials: true, // Necesario para cookies
+    
+}));
 
 // Conexión a la base de datos
 const db = mysql.createConnection({

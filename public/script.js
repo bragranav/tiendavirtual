@@ -1,38 +1,16 @@
 // Manejo de formularios
-/*.getElementById("loginForm")?.addEventListener("submit", async (e) => {
-    e.preventDefault();
-
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-
-    const response = await fetch('/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, password }),
-    });
-
-    const message = document.getElementById("message");
-    if (response.ok) {
-        message.textContent = "Inicio de sesión exitoso.";
-        message.style.color = "green";
-    } else {
-        message.textContent = "Usuario o contraseña incorrectos.";
-        message.style.color = "red";
-    }
-});*/
-
-//////////////////////////////////////////////////////////////////////////
-
 document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
-    const response = await fetch('/login', {
+    // Cambiar la URL para apuntar a tu backend en Render
+    const response = await fetch('https://tiendavirtual-t0ub.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),
+        credentials: 'include', // Asegúrate de incluir las cookies si usas autenticación basada en cookies
     });
 
     const message = document.getElementById("message");
@@ -46,6 +24,7 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
         message.style.color = "red";
     }
 });
+
 document.getElementById("registerForm")?.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -53,10 +32,12 @@ document.getElementById("registerForm")?.addEventListener("submit", async (e) =>
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
-    const response = await fetch('/register', {
+    // Cambiar la URL para apuntar a tu backend en Render
+    const response = await fetch('https://tiendavirtual-t0ub.onrender.com/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password }),
+        credentials: 'include', // Asegúrate de incluir las cookies si usas autenticación basada en cookies
     });
 
     const message = document.getElementById("message");

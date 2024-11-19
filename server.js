@@ -8,6 +8,15 @@ const cookieParser = require('cookie-parser');
 
 const app = express();
 const PORT = process.env.PORT || 3306;
+const cors = require('cors');
+
+// Configura CORS para permitir el acceso desde tu frontend en Netlify
+app.use(cors({
+    origin: 'https://tiendavirtual-t0ub.onrender.com', // Reemplaza con la URL de tu frontend
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type'],
+    credentials: true, // Permite el envío de cookies
+}));
 
 // Conexión a la base de datos
 const db = mysql.createConnection({

@@ -12,7 +12,7 @@ const cors = require('cors');
 
 // Configura CORS para permitir el acceso desde tu frontend en Netlify
 app.use(cors({
-    origin: 'https://tiendavirtual-t0ub.onrender.com', // Reemplaza con la URL de tu frontend
+    origin: '*', // Reemplaza con la URL de tu frontend
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true, // Permite el envío de cookies

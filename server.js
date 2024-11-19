@@ -18,8 +18,6 @@ const cors = require('cors');
     credentials: true, // Permite el envío de cookies
 }));*/
 
-
-
 // Conexión a la base de datos
 const db = mysql.createConnection({
     host: process.env.DB_HOST,
@@ -78,54 +76,9 @@ app.post('/register', async (req, res) => {
 });
 
 // Inicio de sesión
-app.post('/login', (req, res) => {
-    const { username, password } = req.body;
-
-    const query = 'SELECT * FROM users WHERE username = ?';
-    db.query(query, [username], async (err, results) => {
-        if (err) {
-            res.status(500).send('Error interno del servidor.');
-        } else
-            if (results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
-            res.status(400).send('Usuario o contraseña incorrectos.');
-        } else {
-            // Iniciar sesión y redirigir al frontend con el nombre de usuario
-            res.cookie('username', results[0].username, { maxAge: 900000});
-            res.status(200).send('Inicio de sesión exitoso.');
-        }
-    });
-});
-
-// Iniciar el servidor
-app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
-
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     console.log('Solicitud de login recibida:', req.body);
 
-    const { username, password } = req.body;
-    const query = 'SELECT * FROM users WHERE username = ?';
-    db.query(query, [username], async (err, results) => {
-        if (err) {
-            console.error('Error en la base de datos:', err);
-            return res.status(500).send('Error interno del servidor.');
-        }
-        if (results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
-            console.log('Usuario o contraseña incorrectos');
-            return res.status(400).send('Usuario o contraseña incorrectos.');
-        }
-
-        res.cookie('username', results[0].username, {
-            maxAge: 900000,
-            httpOnly: true,
-            secure: true,
-            sameSite: 'None'
-        });
-        res.status(200).send('Inicio de sesión exitoso.');
-    });
-});
-
-
-app.post('/login', (req, res) => {
     const { username, password } = req.body;
 
     if (!username || !password) {
@@ -149,11 +102,19 @@ app.post('/login', (req, res) => {
                 return res.status(400).send('Contraseña incorrecta.');
             }
 
-            res.cookie('username', results[0].username, { maxAge: 900000 });
-            res.status(200).send('Inicio de sesión exitoso.');
+            res.cookie('username', results[0].username, {
+                maxAge: 900000,
+                httpOnly: true,
+                secure: true,
+                sameSite: 'None',
+            });
+            return res.status(200).send('Inicio de sesión exitoso.');
         } catch (error) {
             console.error('Error al comparar contraseñas:', error);
-            res.status(500).send('Error interno al verificar la contraseña.');
+            return res.status(500).send('Error interno al verificar la contraseña.');
         }
     });
 });
+
+// Iniciar el servidor
+app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));

@@ -6,7 +6,7 @@ document.getElementById("loginForm")?.addEventListener("submit", async (e) => {
     const password = document.getElementById("password").value;
 
     // Cambiar la URL para apuntar a tu backend en Render
-    const response = await fetch('https://tiendavirtual-t0ub.onrender.com', {
+    const response = await fetch('https://tiendavirtual-t0ub.onrender.com/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password }),

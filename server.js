@@ -7,16 +7,18 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const PORT = process.env.PORT || 3306;
+const PORT = process.env.PORT || 3000;
 const cors = require('cors');
 
 // Configura CORS para permitir el acceso desde tu frontend en Netlify
 app.use(cors({
-    origin: 'sprightly-druid-1fb38a.netlify.app', // Reemplaza con la URL de tu frontend
+    origin: 'https://sprightly-druid-1fb38a.netlify.app', // Reemplaza con la URL de tu frontend
     methods: ['GET', 'POST'],
     allowedHeaders: ['Content-Type'],
     credentials: true, // Permite el envío de cookies
 }));
+
+
 
 // Conexión a la base de datos
 const db = mysql.createConnection({
@@ -93,3 +95,28 @@ app.post('/login', (req, res) => {
 
 // Iniciar el servidor
 app.listen(PORT, () => console.log(`Servidor corriendo en http://localhost:${PORT}`));
+
+app.post('/login', (req, res) => {
+    console.log('Solicitud de login recibida:', req.body);
+
+    const { username, password } = req.body;
+    const query = 'SELECT * FROM users WHERE username = ?';
+    db.query(query, [username], async (err, results) => {
+        if (err) {
+            console.error('Error en la base de datos:', err);
+            return res.status(500).send('Error interno del servidor.');
+        }
+        if (results.length === 0 || !(await bcrypt.compare(password, results[0].password))) {
+            console.log('Usuario o contraseña incorrectos');
+            return res.status(400).send('Usuario o contraseña incorrectos.');
+        }
+
+        res.cookie('username', results[0].username, {
+            maxAge: 900000,
+            httpOnly: true,
+            secure: true,
+            sameSite: 'None'
+        });
+        res.status(200).send('Inicio de sesión exitoso.');
+    });
+});

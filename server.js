@@ -5,18 +5,27 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser');
 const path = require('path');
 const cookieParser = require('cookie-parser');
-
 const app = express();
 const PORT = process.env.PORT || 3306;
 const cors = require('cors');
 
 // Configura CORS para permitir el acceso desde tu frontend en Netlify
 app.use(cors({
-    origin: 'https://sprightly-druid-1fb38a.netlify.app',
-    methods: ['GET', 'POST'],
+    origin: (origin, callback) => {
+        const allowedOrigins = [
+            'https://sprightly-druid-1fb38a.netlify.app',
+            'https://673d17acc1331700099231c0--sprightly-druid-1fb38a.netlify.app'
+        ];
+
+        if (!origin || allowedOrigins.includes(origin)) {
+            callback(null, true); // Permite el origen
+        } else {
+            callback(new Error('Origen no permitido por CORS'));
+        }
+    },
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type'],
-    credentials: true, // Necesario para cookies
-    
+    credentials: true // Necesario para cookies
 }));
 
 // Conexión a la base de datos

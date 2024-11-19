@@ -7,7 +7,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3306;
 const cors = require('cors');
 
 // Configura CORS para permitir el acceso desde tu frontend en Netlify

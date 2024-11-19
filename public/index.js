@@ -1,3 +1,4 @@
+
 // se realizó el script para al momento de hacer click en menu hamburguesa se despliegue un submenu y permita cerrar dicha ventana
 const menu = document.querySelector(".navbar");
 const abrirMenuBtn = document.querySelector(".open-menu");
